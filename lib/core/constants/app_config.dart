@@ -10,11 +10,19 @@ class AppConfig {
   ///   - Android Emulator : http://10.0.2.2:8000
   ///   - Appareil physique sur réseau Wi-Fi : http://<IP_LOCALE_PC>:8000
   ///   - Production : https://api.diaba.sn
+  static const String _envApiUrl = String.fromEnvironment('API_BASE_URL');
+
   static String get apiBaseUrl {
+    if (_envApiUrl.isNotEmpty) {
+      return _envApiUrl;
+    }
     if (kIsWeb) {
       return 'http://localhost:8000';
     }
-    return 'http://10.0.2.2:8000';
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return 'http://10.0.2.2:8000';
+    }
+    return 'http://localhost:8000';
   }
 
   static const String apiPrefix = '/api';
